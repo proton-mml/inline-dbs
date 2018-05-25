@@ -2,6 +2,9 @@
 //Exemplo inicial (modificado) do site do node-postgres. Apenas conecta no BD e imprime o
 // primeiro usuário da tabela de usuários.
 
+//Não consegui fazer funcionar ainda com await, vejam os exemplos em
+// https://node-postgres.com/features/connecting
+
 const { Client } = require('pg');
 const client = new Client();
 
