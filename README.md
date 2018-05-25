@@ -7,7 +7,11 @@ modulo do node para testes iniciais no BD relacional e NoSQL (PostgreSQL e Mongo
 respectivamente).
 
 ## Rodando o test_db
-
+Clone e entre no repositório `test_db`:
+```
+git clone https://github.com/proton-mml/inline-dbs
+cd test_db
+```
 Construa as dependencias:
 ```
 npm build
