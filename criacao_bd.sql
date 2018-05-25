@@ -1,3 +1,19 @@
+/****************************************************************************
+
+                Sistema InLine
+                Script para criação do BD
+
+                Projeto de MAC0439 - Fase III
+                2o semestre de 2018
+
+    Matheus Tavares Bernardino - N°USP: 9292987
+    Lucas Seiki Oshiro - N°USP: 9298228
+    Marcos Vinicius do Carmo Sousa - N°USP: 9298274
+
+****************************************************************************/
+
+
+
 DROP SCHEMA IF EXISTS inline CASCADE;
 CREATE SCHEMA inline;
 
