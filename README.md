@@ -10,22 +10,5 @@ respectivamente).
 Clone e entre no repositório `test_db`:
 ```
 git clone https://github.com/proton-mml/inline-dbs
-cd test_db
 ```
-Construa as dependencias:
-```
-npm install
-```
-Incialize as variaveis de ambiente:
-```
-export PGUSER=...
-export PGPORT=...
-export PGHOST=...
-export PGPASSWORD=...
-export PGDATABASE=...
-```
-Rode:
-```
-npm start
-```
-
+Execute o script ```run.sh [host-pgsql] [porta-pgsql] [usuario-pgsql] [senha-pgsql] [bd-pgsql] [url-mongo]``` .
