@@ -38,6 +38,19 @@ async function remove_avaliacao () {
     await client.query("DELETE FROM inline.avaliacao WHERE id = 2");
 }
 
+async function update_endereco () {
+    await client.query("UPDATE inline.usuario SET nome='Faria Fanfa' WHERE email='fanfafa@fanfa.com'");
+}
+
+async function selects () {
+    console.log('Todas as avaliações:');
+    console.log((await client.query("SELECT * FROM inline.avaliacao")).rows);
+    console.log('Usuários: ')
+    console.log((await client.query("SELECT * FROM inline.usuario WHERE tipo='cliente cadastrado'")).rows);
+    console.log('Todas as estrelas e comentários das avaliações, com o nome dos usuários e das empresas: ');
+    console.log((await client.query("SELECT uc.nome AS Cliente, ue.nome AS Estabelecimento, a.estrelas AS Estrelas, a.comentario AS Comentario FROM inline.usuario AS uc, inline.avaliacao AS a, inline.usuario AS ue WHERE a.email_cliente = uc.email AND a.email_estabelecimento = ue.email;")).rows);
+}
+
 async function connect_and_insert () {
     await client.connect();
     await clean_and_create_db();
@@ -45,6 +58,8 @@ async function connect_and_insert () {
     await insert_empresas_estabelecimentos();
     await insert_avaliacao();
     await remove_avaliacao();
+    await update_endereco();
+    await selects();
     client.end();
 }
 
