@@ -15,28 +15,115 @@ async function init() {
 	console.log('You are connected to mongodb at:\n' + mongoUrl);
 	mongoose.set('debug', true);
   Fila = mongoose.model('fila', fila(Schema));
-
+  await deleteDataFromCollection (Fila);
   await populate();
-  finishConnection();
+  await finishConnection();
 
+}
+async function deleteDataFromCollection(Model) {
+	console.log('Dropping collection...');
+	const remove = await Model.remove({});
+	console.log('Collection dropped');
+}
+function users(batch) {
+  return {
+    id: faker.random.uuid(),
+    entrada: faker.date.between('2018-01-01', '2018-05-05'),
+    saida: faker.date.between('2018-01-01', '2018-05-05'),
+    gps: faker.random.number ({min: 10, max: 10000}),
+    posicao: faker.random.number ({min: 1, max: batch})
+  };
 }
 
 async function populate() {
-
+  var numEstabecimentos = faker.random.number ({min: 1, max: 10});
+  for (var k = 0; k < numEstabecimentos; k++) {
+    var estabelecimento_id = faker.random.uuid();
+    var fila = await Fila.create(filaData(estabelecimento_id, faker.random.number ({min: 5, max: 100})));
+    var fila_id = new mongoose.mongo.ObjectId(fila._id);
+    var batch = faker.random.number ({min: 5, max: 100});
+    for (var i = 0; i < batch; i++) {
+      var user_data = usuariosData(users(batch));
+      const update = {
+        entradas:  user_data.filas_cronologicas.entradas,
+        concluidos: user_data.filas_cronologicas.concluidos ? user_data.filas_cronologicas.concluidos :[],
+        agendamentos: user_data.filas_agendadas ? user_data.filas_agendadas.agendamentos:  [],
+        agendamentos_concluidos: user_data.filas_agendadas ? user_data.filas_agendadas.agendamentos_concluidos: []
+      };
+      await Fila.update ({_id: fila_id}, {$push: {
+        "filas_cronologicas.0.entradas":  update.entradas,
+        "filas_cronologicas.0.concluidos":  update.concluidos,
+        "filas_agendadas.0.agendamentos": update.agendamentos,
+        "filas_agendadas.0.agendamentos_concluidos": update.agendamentos_concluidos
+      }},
+    {safe: true, upsert: true})
+    }
+  }
 }
 
-function filaData(id_estabelecimento) {
+
+function usuariosData(currentUser) {
+  const pref = faker.random.arrayElement([true, false]);
+  const prem = faker.random.arrayElement([true, false]);
   return {
-    id_estabelecimento: id_estabelecimento,
-    id_fila: faker.random.uuid(),
-    data_hora_inicio: faker.date.between('2018-01-01', '2018-06-31').toString(),
-    data_hora_fim: 'none',
-    tamanho: Number,
-    filas_cronologicas:[{type: Schema.Types.ObjectId, ref: 'fila_cronologica'}],
-    filas_agendadas: [{type: Schema.Types.ObjectId, ref: 'fila_agendada'}]
+    filas_cronologicas: {
+      entradas:{
+    	  id_usuario: currentUser.id,
+    	  distancia: currentUser.gps,
+        data_hora_entrada: currentUser.entrada,
+        preferencial: pref,
+        premium: prem,
+        posicao: currentUser.posicao
+  	   },
+      concluidos: faker.random.objectElement({
+        zero: undefined ,one: {
+        id_usuario: currentUser.id,
+        distancia: currentUser.gps,
+        data_hora_entrada: currentUser.entrada,
+        preferencial: pref,
+        premium: prem,
+        posicao: currentUser.posicao,
+        data_hora_saida: currentUser.saida,
+        desistencia_ou_atendido: faker.random.arrayElement(["atendido", "desistencia"])
+    	}
+    }),
+    },
+    filas_agendadas:faker.random.objectElement({
+      zero: undefined ,one: {
+	    agendamentos:{
+			  id_usuario: currentUser.id,
+		    data_hora_agendada: currentUser.entrada,
+		    data_hora_criacao: faker.date.between('2018-01-01', currentUser.entrada),
+			},
+	    agendamentos_concluidos:{
+			  id_usuario: currentUser.id,
+		    data_hora_agendada: currentUser.entrada,
+		    data_hora_criacao: faker.date.between('2018-01-01',currentUser.entrada),
+		    desistencia_ou_atendido: faker.random.arrayElement(["atendido", "desistencia"])
+			}
+		}})
   };
 }
-function finishConnection() {
+
+function filaData(id_estabelecimento, total_fila) {
+  return {
+  	  id_estabelecimento: id_estabelecimento,
+  	  id_fila: faker.random.uuid(),
+      data_hora_inicio: faker.date.between('2018-01-01', '2018-05-31').toString(),
+      data_hora_fim: faker.date.between('2018-05-31', '2018-06-31').toString(),
+      tamanho: total_fila,
+      filas_cronologicas: [{
+        aceita_premium: faker.random.arrayElement([true, false]),
+        aceita_preferencial: faker.random.arrayElement([true, false]),
+        entradas: []
+      }],
+      filas_agendadas:[{
+        agendamentos:[],
+        agendamentos_concluidos: []
+      }]
+	};
+}
+async function finishConnection() {
 	mongoose.connection.close(function () {
 			 console.log('Mongodb connection disconnected');
 			 console.log('Exiting script');
