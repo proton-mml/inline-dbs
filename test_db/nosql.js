@@ -5,7 +5,7 @@ import { fila } from './schemas/fila';
 
 faker.locale = "pt_BR";
 
-const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/cool_db';
+const mongoUrl =  process.env.MONGO_URL || 'mongodb://localhost/cool_db';
 let Fila = {}
 
 init();
@@ -15,10 +15,32 @@ async function init() {
 	console.log('You are connected to mongodb at:\n' + mongoUrl);
 	mongoose.set('debug', true);
   Fila = mongoose.model('fila', fila(Schema));
-  await deleteDataFromCollection (Fila);
-  await populate();
+  await deleteDataFromCollection (Fila); // Remoção
+  await populate(); // Inserção e alteração
+  await deleteDataFromCollection (Fila); // Remoção
+  await populate(); // Inserção e alteração
+  await todasAsFilasPremium(); // Alteração
+  await todasAsFilasPreferenciais(); // Alteração
+  await consultaFilaMaior(10); //Seleção
+  await consultaFilaMenor(10); //Seleção
   await finishConnection();
 
+}
+async function consultaFilaMaior(num) {
+  await console.log(Fila.find ({"tamanho": {$gt: num}}));
+}
+async function consultaFilaMenor(num) {
+  await console.log(Fila.find ({"tamanho": {$lt: num}}));
+}
+async function todasAsFilasPreferenciais() {
+  await Fila.update ({}, {$set: {
+    "filas_cronologicas.0.aceita_preferencial":  true
+  }});
+}
+async function todasAsFilasPremium() {
+  await Fila.update ({}, {$set: {
+    "filas_cronologicas.0.aceita_premium":  true
+  }});
 }
 async function deleteDataFromCollection(Model) {
 	console.log('Dropping collection...');
@@ -30,18 +52,18 @@ function users(batch) {
     id: faker.random.uuid(),
     entrada: faker.date.between('2018-01-01', '2018-05-05'),
     saida: faker.date.between('2018-01-01', '2018-05-05'),
-    gps: faker.random.number ({min: 10, max: 10000}),
+    gps: Number(faker.random.number ({min: 10, max: 10000})),
     posicao: faker.random.number ({min: 1, max: batch})
   };
 }
 
 async function populate() {
-  var numEstabecimentos = faker.random.number ({min: 1, max: 10});
+  var numEstabecimentos = faker.random.number ({min: 1, max: 1});
   for (var k = 0; k < numEstabecimentos; k++) {
     var estabelecimento_id = faker.random.uuid();
     var fila = await Fila.create(filaData(estabelecimento_id, faker.random.number ({min: 5, max: 100})));
     var fila_id = new mongoose.mongo.ObjectId(fila._id);
-    var batch = faker.random.number ({min: 5, max: 100});
+    var batch = faker.random.number ({min: 1, max: 5});
     for (var i = 0; i < batch; i++) {
       var user_data = usuariosData(users(batch));
       const update = {
