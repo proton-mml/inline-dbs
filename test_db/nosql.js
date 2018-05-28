@@ -58,12 +58,12 @@ function users(batch) {
 }
 
 async function populate() {
-  var numEstabecimentos = faker.random.number ({min: 1, max: 1});
+  var numEstabecimentos = faker.random.number ({min: 1, max: 10});
   for (var k = 0; k < numEstabecimentos; k++) {
     var estabelecimento_id = faker.random.uuid();
     var fila = await Fila.create(filaData(estabelecimento_id, faker.random.number ({min: 5, max: 100})));
     var fila_id = new mongoose.mongo.ObjectId(fila._id);
-    var batch = faker.random.number ({min: 1, max: 5});
+    var batch = faker.random.number ({min: 1, max: 20});
     for (var i = 0; i < batch; i++) {
       var user_data = usuariosData(users(batch));
       const update = {
