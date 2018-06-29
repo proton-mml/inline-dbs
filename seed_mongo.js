@@ -58,11 +58,11 @@ db.filas.insertMany([
                 {
                     "id_usuario": 'aaa@aaa.aa',
                     "distancia": "0m",
-                    "data_hora_entrada": new Date("2018-02-02T7:00:00"),
+                    "data_hora_entrada": new Date("2018-06-02T7:00:00"),
                     "preferencial": false,
                     "premium": false,
                     "posicao": 1,
-                    "data_hora_saida": new Date("2018-02-02T7:50:00"),
+                    "data_hora_saida": new Date("2018-06-02T7:50:00"),
                     'desistencia_ou_atendido': "atendido"
                 }
             ],
@@ -70,7 +70,7 @@ db.filas.insertMany([
                 {
                     "id_usuario": "eloy@eloy.com",
                     "distancia": "1km",
-                    "data_hora_entrada": new Date("2018-02-02T7:00:00"),
+                    "data_hora_entrada": new Date("2018-06-02T7:00:00"),
                     "preferencial": false,
                     "premium": false,
                     "posicao": 0,
@@ -78,7 +78,7 @@ db.filas.insertMany([
                 {
                     "id_usuario": 'aurelio@abc.de',
                     "distancia": "10m",
-                    "data_hora_entrada": new Date("2018-02-02T7:10:00"),
+                    "data_hora_entrada": new Date("2018-06-02T7:10:00"),
                     "preferencial": false,
                     "premium": false,
                     "posicao": 1,
@@ -86,11 +86,39 @@ db.filas.insertMany([
                 {
                     "id_usuario": 'emerson@elp.com',
                     "distancia": "3m",
-                    "data_hora_entrada": new Date("2018-02-02T8:00:00"),
+                    "data_hora_entrada": new Date("2018-06-02T8:00:00"),
                     "preferencial": false,
                     "premium": false,
                     "posicao": 2,
                 },
+            ]
+        }
+    },
+    {
+    	"id_estabelecimento":"fanfapa@fanfa.com",
+        "data_hora_inicio": new Date("2017-03-29T6:00:00"),
+        "data_hora_fim": new Date("2020-03-29T15:59:59"),
+        "tamanho": 3,
+        "agendada": {
+            "agendamentos_concluidos": [
+                {
+                    "id_usuario": 'aaa@aaa.aa',
+                    "data_hora_agendada": new Date("2018-01-02T7:00:00"),
+                    "data_hora_criacao": new Date("2017-11-02T20:00:00"),
+                    'desistencia_ou_atendido': "atendido"
+                }
+            ],
+            "agendamentos": [
+                {
+                    "id_usuario": 'emerson@elp.com',
+                    "data_hora_agendada": new Date("2018-07-03T7:00:00"),
+                    "data_hora_criacao": new Date("2017-12-02T21:00:00"),
+                },
+                {
+                    "id_usuario": 'aurelio@abc.de',
+                    "data_hora_agendada": new Date("2018-08-02T6:00:00"),
+                    "data_hora_criacao": new Date("2018-07-02T10:00:00"),
+                }
             ]
         }
     },
