@@ -59,7 +59,8 @@ CREATE TABLE empresa (
    id_endereco int         NOT NULL,
    PRIMARY KEY (email),
    FOREIGN KEY (email)       REFERENCES usuario  ON DELETE CASCADE,
-   FOREIGN KEY (id_endereco) REFERENCES endereco ON DELETE RESTRICT
+   FOREIGN KEY (id_endereco) REFERENCES endereco ON DELETE RESTRICT,
+   UNIQUE (id_endereco)
 );
 
 CREATE TABLE estabelecimento (
@@ -70,7 +71,8 @@ CREATE TABLE estabelecimento (
    PRIMARY KEY (email),
    FOREIGN KEY (email) REFERENCES usuario ON DELETE CASCADE,
    FOREIGN KEY (email_empresa) REFERENCES empresa ON DELETE CASCADE,
-   FOREIGN KEY (id_endereco) REFERENCES endereco ON DELETE RESTRICT
+   FOREIGN KEY (id_endereco) REFERENCES endereco ON DELETE RESTRICT,
+   UNIQUE (id_endereco)
 );
 
 CREATE TABLE cliente (
@@ -80,7 +82,6 @@ CREATE TABLE cliente (
    PRIMARY KEY (id)
 );
 
--- FAZER TRIGGER PARA DELETAR CLIENTE
 CREATE TABLE cliente_cadastrado (
    email       varchar(50),
    id_cliente  int,
@@ -89,9 +90,8 @@ CREATE TABLE cliente_cadastrado (
    FOREIGN KEY (id_cliente) REFERENCES cliente ON DELETE RESTRICT
 );
 
--- FAZER TRIGGER PARA DELETAR CLIENTE
 CREATE TABLE cliente_nao_cadastrado (
-   id_cliente serial,
+   id_cliente int,
    nome       varchar(50),
    PRIMARY KEY (id_cliente),
    FOREIGN KEY (id_cliente) REFERENCES cliente ON DELETE CASCADE
@@ -105,7 +105,8 @@ CREATE TABLE avaliacao (
    email_cliente         varchar(50) NOT NULL,
    PRIMARY KEY (id),
    FOREIGN KEY (email_estabelecimento) REFERENCES estabelecimento    ON DELETE CASCADE,
-   FOREIGN KEY (email_cliente)         REFERENCES cliente_cadastrado ON DELETE CASCADE
+   FOREIGN KEY (email_cliente)         REFERENCES cliente_cadastrado ON DELETE CASCADE,
+   UNIQUE (email_estabelecimento, email_cliente)
 );
 
 CREATE TABLE hora_dia_funcionamento (
@@ -113,11 +114,12 @@ CREATE TABLE hora_dia_funcionamento (
    dia_semana            char(3),
    hora_inicio           time,
    hora_fim              time,
-   FOREIGN KEY (email_estabelecimento) REFERENCES estabelecimento ON DELETE CASCADE
+   FOREIGN KEY (email_estabelecimento) REFERENCES estabelecimento ON DELETE CASCADE,
+   PRIMARY KEY (email_estabelecimento, dia_semana, hora_inicio)
 );
 
 
--- Tabelas obsoletas
+-- Tabelas não utilizadas na implementação
 
 CREATE TABLE cliente_premium (
    email varchar(50),
@@ -133,7 +135,7 @@ CREATE TABLE servico_premium (
    discriminacao servico_t  NOT NULL,
    timestamp_aquisicao date NOT NULL,
    valor float              NOT NULL,
-   id int,
+   id serial,
    PRIMARY KEY (id),
    FOREIGN KEY (email_cliente) REFERENCES cliente_cadastrado ON DELETE RESTRICT
 );
