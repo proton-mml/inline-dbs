@@ -49,7 +49,7 @@ CREATE TABLE usuario (
    nome  varchar(50)  NOT NULL,
    tipo  usuario_t    NOT NULL,
    email varchar(50),
-   senha varchar(50)  NOT NULL,
+   senha varchar(100)  NOT NULL,
    PRIMARY KEY (email)
 );
 
