@@ -122,7 +122,7 @@ db.filas.insertMany([
             ],
             "agendamentos": [
                 {
-                    "id_cliente": 2
+                    "id_cliente": 2,
                     "data_hora_agendada": new Date("2018-07-03T7:00:00"),
                     "data_hora_criacao": new Date("2017-12-02T21:00:00"),
                 },
