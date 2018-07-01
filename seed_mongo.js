@@ -74,7 +74,7 @@ db.filas.insertMany([
                     "preferencial": false,
                     "premium": false,
                     "posicao": 1,
-                    "data_hora_saida": new Date("2018-06-02T7:50:00"),
+                    "data_hora_saida": new Date("2018-06-02T07:50:00"),
                     'desistencia_ou_atendido': "atendido"
                 }
             ],
@@ -108,7 +108,7 @@ db.filas.insertMany([
     },
     {
     	"id_estabelecimento":"fanfapa@fanfa.com",
-        "data_hora_inicio": new Date("2017-03-29T6:00:00"),
+        "data_hora_inicio": new Date("2017-03-29T06:00:00"),
         "data_hora_fim": new Date("2020-03-29T15:59:59"),
         "tamanho": 2,
         "agendada": {
