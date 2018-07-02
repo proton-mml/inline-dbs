@@ -31,7 +31,7 @@ db.filas.insertMany([
                     "data_hora_entrada": new Date("2018-02-02T12:00:00"),
                     "preferencial": false,
                     "premium": false,
-                    "posicao": 0,
+                    "posicao": 1,
                     "data_hora_saida":  new Date("2018-02-02T12:05:00"),
                     "desistencia_ou_atendido": "atendido",
                 },
@@ -41,7 +41,7 @@ db.filas.insertMany([
                     "data_hora_entrada": new Date("2018-02-02T12:00:00"),
                     "preferencial": false,
                     "premium": false,
-                    "posicao": 0,
+                    "posicao": 1,
                     "data_hora_saida":  new Date("2018-02-02T12:05:00"),
                     "desistencia_ou_atendido": "atendido",
                 },
@@ -85,7 +85,7 @@ db.filas.insertMany([
                     "data_hora_entrada": new Date("2018-06-02T07:00:00"),
                     "preferencial": false,
                     "premium": false,
-                    "posicao": 0,
+                    "posicao": 1,
                 },
                 {
                     "id_cliente": 3,
@@ -93,7 +93,7 @@ db.filas.insertMany([
                     "data_hora_entrada": new Date("2018-06-02T07:10:00"),
                     "preferencial": true,
                     "premium": false,
-                    "posicao": 1,
+                    "posicao": 2,
                 },
                 {
                     "id_cliente": 4,
@@ -101,7 +101,7 @@ db.filas.insertMany([
                     "data_hora_entrada": new Date("2018-06-02T08:00:00"),
                     "preferencial": false,
                     "premium": false,
-                    "posicao": 2,
+                    "posicao": 3,
                 },
             ]
         }
